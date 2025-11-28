@@ -138,11 +138,10 @@ def step_impl(context, button):
     button_id = button.lower() + '-btn'
     context.driver.find_element_by_id(button_id).click()
 
-
-@then('I should see "{name}" in the results')
+@then('I should not see "{name}" in the results')
 def step_impl(context, name):
     element = context.driver.find_element_by_id('search_results')
-    assert(name in element.text)
+    assert(name not in element.text)
 
 @then('I should see the message "{message}"')
 def step_impl(context, message):
@@ -154,7 +153,11 @@ def step_impl(context, message):
     )
     assert(found)
 
-@then('I should not see "{name}" in the results')
-def step_impl(context, name):
-    element = context.driver.find_element_by_id('search_results')
-    assert name not in element.text, f"Found '{name}' in results when it should not be there"
+@then('I should see "{text}" in the results')
+def step_impl(context, text):
+    """Verifica se o texto aparece nos resultados da busca"""
+    # Procura o texto na área de resultados
+    results_element = context.driver.find_element_by_id('search_results')
+    assert text in results_element.text, f"Expected '{text}' in results but got: {results_element.text}"
+
+@then('I should not see "{text}" in the results')
